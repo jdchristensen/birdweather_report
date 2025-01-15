@@ -52,12 +52,8 @@ The script generates and emails an HTML report containing:
 - Python 3.7+
 - requests
 - jinja2
-- A Gmail account with app password configured
-- BirdWeather station token
-
-## Security Note
-
-Never commit config.py with real credentials. The repository includes a sample config.py.template with placeholder values.
+- SMTP e-mail credentials
+- BirdWeather station ID
 
 ## License
 
