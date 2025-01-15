@@ -1,0 +1,9 @@
+# config.py.template
+# Rename to config.py and fill in your values
+
+EMAIL_TO = ""
+EMAIL_FROM = ""
+EMAIL_PASSWORD = ""  #
+SMTP_SERVER = ""
+SMTP_PORT = 587
+STATION_TOKEN = "10944"  # Your BirdWeather station ID (eg "10345")
