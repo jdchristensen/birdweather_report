@@ -14,6 +14,7 @@ def fetch_bird_detections(hours=24):
     from_time = (now - timedelta(hours=hours)).isoformat()
     
     url = f"https://app.birdweather.com/api/v1/stations/{config.STATION_TOKEN}/detections"
+    
     params = {
         "from": from_time,
         "limit": 100,
@@ -100,7 +101,7 @@ def generate_report(hours=24):
     <body>
         <h1>Bird Detection Report - Past {{ hours }} Hours</h1>
         <h2>{{ species_list|length }} Species, {{ species_list|sum(attribute='count') }} Total Detections</h2>
-        <p>Generated on {{ generated_on }}</p>
+        <p>Generated on {{ generated_on }} from <a href="{{ friendly_url }}">BirdWeather station {{config.STATION_TOKEN}}</p>
         {% for species in species_list %}
         <div class="species-card">
             <div class="species-header">
@@ -143,7 +144,9 @@ def generate_report(hours=24):
     return template.render(
         species_list=sorted_species,
         hours=hours,
-        generated_on=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        generated_on=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        friendly_url= f"https://app.birdweather.com/stations/{config.STATION_TOKEN}",
+        config=config
     )
 
 def send_email(html_content):
