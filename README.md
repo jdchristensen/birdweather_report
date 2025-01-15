@@ -28,12 +28,12 @@ STATION_TOKEN = "your_station_token"  # BirdWeather station ID (eg 12345)
 
 Basic usage with default 24-hour report:
 ```bash
-python bird_report.py
+python birdweather_report.py
 ```
 
 Generate report for different time period:
 ```bash
-python bird_report.py --hours 48  # Last 48 hours
+python birdweather_report.py --hours 48  # Last 48 hours
 ```
 
 ## Output
