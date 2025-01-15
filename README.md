@@ -21,6 +21,8 @@ pip install requests jinja2
 EMAIL_TO = "your.email@example.com"
 EMAIL_FROM = "sender.email@example.com"
 EMAIL_PASSWORD = "your_app_password"  # SMTP password (or Gmail app-specific password)
+SMTP_SERVER = "smtp.example.com"  # email sending server
+SMTP_PORT = 587
 STATION_TOKEN = "your_station_token"  # BirdWeather station ID (eg 12345)
 ```
 
