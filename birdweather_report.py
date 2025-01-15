@@ -2,19 +2,27 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 from jinja2 import Template
 import argparse
 import config
+import logging
+import sys
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    stream=sys.stdout
+)
 
 def fetch_bird_detections(hours=24):
     detections = []
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     from_time = (now - timedelta(hours=hours)).isoformat()
+    logging.info(f"Fetching detections from {from_time}")
     
     url = f"https://app.birdweather.com/api/v1/stations/{config.STATION_TOKEN}/detections"
-    
     params = {
         "from": from_time,
         "limit": 100,
@@ -27,6 +35,8 @@ def fetch_bird_detections(hours=24):
         
         if not data['success'] or not data['detections']:
             break
+            
+        logging.info(f"Fetched {len(data['detections'])} detections")
             
         detections.extend(data['detections'])
         last_id = data['detections'][-1]['id']
@@ -151,7 +161,7 @@ def generate_report(hours=24):
 
 def send_email(html_content):
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = "Bird Detection Report"
+    msg['Subject'] = "BirdWeather Report 🦉"
     msg['From'] = config.EMAIL_FROM
     msg['To'] = config.EMAIL_TO
     msg.attach(MIMEText(html_content, 'html'))
@@ -167,5 +177,8 @@ if __name__ == "__main__":
                       help='Number of hours to include in report (default: 24)')
     args = parser.parse_args()
     
+    logging.info(f"Starting report generation for past {args.hours} hours")
     html_report = generate_report(args.hours)
+    logging.info("Generated HTML report, sending email")
     send_email(html_report)
+    logging.info("Email sent successfully")
