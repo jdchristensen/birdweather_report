@@ -100,7 +100,7 @@ def generate_report(hours=24):
             body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
             .species-card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
             .species-header { display: flex; gap: 20px; margin-bottom: 15px; }
-            .species-image { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; }
+            .species-image { width: 150px; height: 150px; object-fit: cover; border-radius: 8px; margin-right: 20px; }
             .species-info { flex: 1; }
             .species-name { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
             .scientific-name { font-style: italic; color: #666; }
@@ -121,17 +121,17 @@ def generate_report(hours=24):
                 {% if species.image_url %}
                 <img src="{{ species.image_url }}" alt="{{ species.name }}" class="species-image">
                 {% endif %}
-                <div class="species-info">
-                    <div class="species-name">{{ species.name }}</div>
-                    <div class="scientific-name">{{ species.scientific_name }}</div>
-                    <div>Detections: {{ species.count }}</div>
-                    <div>Highest confidence: {{ "%.1f"|format(species.max_confidence * 100) }}%</div>
+                <span class="species-info">
+                    <span class="species-name"><b>{{ species.name }}</b></span> -
+                    <span class="scientific-name"><i>{{ species.scientific_name }}</i></span><br>
+                    <span>Detections: {{ species.count }}.</span> &nbsp;
+                    <span>Highest confidence: {{ "%.1f"|format(species.max_confidence * 100) }}%.</span>
                     {% if species.best_soundscape %}
-                    <a href="{{ species.best_soundscape.url }}" class="sound-link">
+                    <br><a href="{{ species.best_soundscape.url }}" class="sound-link">
                         Listen to best detection ({{ "%.1f"|format(species.best_soundscape.startTime) }}s - {{ "%.1f"|format(species.best_soundscape.endTime) }}s)
                     </a>
                     {% endif %}
-                </div>
+                </span>
             </div>
             
             <div>
@@ -142,6 +142,7 @@ def generate_report(hours=24):
                 </div>
             </div>
         </div>
+        &nbsp;
         {% endfor %}
     </body>
     </html>
