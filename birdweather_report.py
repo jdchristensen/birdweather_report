@@ -85,8 +85,9 @@ def generate_report(hours=24):
     for species in sorted_species:
         species['hours'] = [
             {
+                'hour': hour,
                 'count': species['hour_counts'].get(hour, 0),
-                'intensity': min(species['hour_counts'].get(hour, 0) * 20, 100)
+                'intensity': min(species['hour_counts'].get(hour, 0) * 25, 255)
             }
             for hour in range(24)
         ]
@@ -135,15 +136,8 @@ def generate_report(hours=24):
             
             <div>
                 <div class="grid-header">
-                    {% for hour in range(24) %}
-                    <div class="hour-label">{{hour}}</div>
-                    {% endfor %}
-                </div>
-                <div class="hour-grid">
                     {% for hour in species.hours %}
-                    <div class="hour-cell" style="background-color: rgba(0, 100, 0, {{ hour.intensity / 100 }});" 
-                         title="{{ hour.count }} detections">
-                    </div>
+                    <span class="hour-label" style="background-color: rgb({{ 255 - hour.intensity }}, 255, {{ 255 - hour.intensity }});" title="{{ hour.count }} detections">{{hour.hour}}</span>
                     {% endfor %}
                 </div>
             </div>
